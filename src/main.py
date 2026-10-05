@@ -1,9 +1,6 @@
 import sys
 
-
-# =============================================================================
 # 1. MYERS DIFF (works on any indexable sequence of hashables)
-# =============================================================================
 
 def myers_diff(a, b):
     n, m = len(a), len(b)
@@ -75,9 +72,7 @@ def myers_diff(a, b):
     return script
 
 
-# =============================================================================
 # 2. DELETE-FIRST RULE
-# =============================================================================
 
 def deletes_before_inserts(script):
     result = []
@@ -105,9 +100,7 @@ def deletes_before_inserts(script):
     return result
 
 
-# =============================================================================
 # 3. FILE READING
-# =============================================================================
 
 def read_lines(path):
     with open(path, "rb") as f:
@@ -120,9 +113,7 @@ def read_lines(path):
     return lines
 
 
-# =============================================================================
 # 4. HIGHLIGHT HELPERS
-# =============================================================================
 
 def format_ranges(indices):
     """Coalesce sorted unique indices into 'start-end,start-end,...'."""
@@ -155,9 +146,7 @@ def highlight_pair(old_line, new_line):
             format_ranges(new_idx) if new_idx else ".")
 
 
-# =============================================================================
 # 5. COMMANDS
-# =============================================================================
 
 def cmd_lines(path_a, path_b):
     a = read_lines(path_a)
@@ -222,9 +211,7 @@ def cmd_highlight(path_a, path_b):
     out.flush()
 
 
-# =============================================================================
 # 6. MAIN
-# =============================================================================
 
 def main(argv):
     if len(argv) < 4:
