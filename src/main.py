@@ -1,5 +1,5 @@
 import sys
-
+from array import array
 
 def myers_diff(a, b):
     n, m = len(a), len(b)
@@ -32,27 +32,31 @@ def myers_diff(a, b):
             v[idx] = x
 
             if x >= n and y >= m:
-                trace.append(v.copy())
                 break
-        else:
-            trace.append(v.copy())
-            continue
-        break
+
+        # Only store the diagonals that are possible at this d.
+        trace.append(array('i', v[offset - d:offset + d + 1]))
+
+        if x >= n and y >= m:
+            end_d = d
+            break
 
     script = []
     x, y = n, m
 
-    for d in range(len(trace) - 1, 0, -1):
-        vprev = trace[d - 1]
+    for d in range(end_d, 0, -1):
+        prev = trace[d - 1]
         k = x - y
-        idx = offset + k
 
-        if k == -d or (k != d and vprev[idx - 1] < vprev[idx + 1]):
+        if k == -d or (
+            k != d and
+            prev[(k - 1) + (d - 1)] < prev[(k + 1) + (d - 1)]
+        ):
             prev_k = k + 1
         else:
             prev_k = k - 1
 
-        prev_x = vprev[offset + prev_k]
+        prev_x = prev[prev_k + (d - 1)]
         prev_y = prev_x - prev_k
 
         while x > prev_x and y > prev_y:
@@ -74,7 +78,6 @@ def myers_diff(a, b):
 
     script.reverse()
     return script
-
 
 def delete_first(script):
     result = []
